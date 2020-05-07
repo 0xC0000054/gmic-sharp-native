@@ -1,0 +1,2 @@
+#define GMICSHARPNATIVE_API __declspec(dllexport)
+#define GMICSHARPNATIVE_API __declspec(dllimport)
