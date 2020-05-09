@@ -463,8 +463,20 @@ namespace
                     dst[0] = ClampToUint8(*srcB++);
                     dst[1] = ClampToUint8(*srcG++);
                     dst[2] = ClampToUint8(*srcR++);
+                    dst[3] = 255;
                     break;
                 case ImageFormat::Rgba8888:
+                    dst[0] = ClampToUint8(*srcR++);
+                    dst[1] = ClampToUint8(*srcG++);
+                    dst[2] = ClampToUint8(*srcB++);
+                    dst[3] = 255;
+                    break;
+                case ImageFormat::Bgr888x:
+                    dst[0] = ClampToUint8(*srcB++);
+                    dst[1] = ClampToUint8(*srcG++);
+                    dst[2] = ClampToUint8(*srcR++);
+                    break;
+                case ImageFormat::Rgb888x:
                     dst[0] = ClampToUint8(*srcR++);
                     dst[1] = ClampToUint8(*srcG++);
                     dst[2] = ClampToUint8(*srcB++);
@@ -730,6 +742,8 @@ GmicStatus GSN_API GmicImageListCopyToOutput(GmicImageList* list, unsigned int i
             break;
         case ImageFormat::Bgr888x:
         case ImageFormat::Rgb888x:
+        case ImageFormat::Bgra8888:
+        case ImageFormat::Rgba8888:
             CopyToRgbxOrBgrx(image, width, height, stride, data, format);
             break;
         default:
