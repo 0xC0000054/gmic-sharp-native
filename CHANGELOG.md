@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## Added
+## v0.6.0
+
+### Added
 
 * A Changelog
 
-## Fixed
+### Fixed
 
 * An issue that prevented `GmicImageListCopyToOutput` from correctly converting 24-bit images to Bgr888x and Rgb888x.
 
