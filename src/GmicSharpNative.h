@@ -119,6 +119,7 @@ struct GmicOptions
     const char* commandLine;
     const char* customResourcePath;
     const char* customUserPath;
+    const char* hostName;
     float* progress;
     bool* abort;
 };

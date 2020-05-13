@@ -812,7 +812,7 @@ GmicStatus GSN_API RunGmic(GmicImageList* list, GmicOptions* options, GmicErrorI
 
         AddCommandsFromResources(options->customResourcePath, options->customUserPath, gmicInstance);
 
-        gmicInstance.set_variable("_host", "gmic-sharp", 0);
+        gmicInstance.set_variable("_host", options->hostName ? options->hostName : "gmic-sharp", 0);
 
         gmicInstance.run(options->commandLine, list->images, list->names, options->progress, options->abort);
     }
