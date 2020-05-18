@@ -559,7 +559,7 @@ GmicImageList* GSN_API GmicImageListCreate()
     {
         return new GmicImageList();
     }
-    catch (const std::bad_alloc&)
+    catch (...)
     {
         return nullptr;
     }

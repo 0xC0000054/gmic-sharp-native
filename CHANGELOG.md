@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Allow callers to set a host application name.
 
+### Fixed
+
+* Catch all C++ exceptions in `GmicImageListCreate`.
+
 ## v0.6.0
 
 ### Added
