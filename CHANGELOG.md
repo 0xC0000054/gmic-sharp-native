@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Allow callers to set a host application name.
 
+### Changed
+
+* An `ImageListIndexOutOfRange` error code is now used to indicate when the image list index is not valid.
+
 ### Fixed
 
 * Catch all C++ exceptions in `GmicImageListCreate`.

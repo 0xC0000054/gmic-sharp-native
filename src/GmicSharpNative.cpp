@@ -605,7 +605,7 @@ GmicStatus GSN_API GmicImageListGetImageInfo(
 
     if (index >= list->size())
     {
-        return GmicStatus::InvalidParameter;
+        return GmicStatus::ImageListIndexOutOfRange;
     }
 
     gmic_image<float>* image = list->images.data(index);
@@ -725,7 +725,7 @@ GmicStatus GSN_API GmicImageListCopyToOutput(GmicImageList* list, unsigned int i
 
     if (index >= list->size())
     {
-        return GmicStatus::InvalidParameter;
+        return GmicStatus::ImageListIndexOutOfRange;
     }
 
     const gmic_image<float>* image = list->images.data(index);

@@ -86,6 +86,7 @@ enum class GmicStatus
     GmicError,
     GmicResourcePathInitFailed,
     GmicUnsupportedChannelCount,
+    ImageListIndexOutOfRange,
     UnknownError
 };
 
