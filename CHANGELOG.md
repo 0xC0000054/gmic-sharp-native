@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Catch all C++ exceptions in `GmicImageListCreate`.
 
+### Removed
+
+* The `customUserPath` field in `GmicOptions`.
+
 ## v0.6.0
 
 ### Added

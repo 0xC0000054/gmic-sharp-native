@@ -507,7 +507,6 @@ namespace
 
     void AddCommandsFromResources(
         const char* const customResourcePath,
-        const char* const customUserPath,
         gmic& gmicInstance)
     {
         using namespace cimg_library;
@@ -535,7 +534,7 @@ namespace
             std::fclose(updateFile);
         }
 
-        std::FILE* userFile = std::fopen(gmic::path_user(customUserPath), "rb");
+        std::FILE* userFile = std::fopen(gmic::path_user(customResourcePath), "rb");
 
         if (userFile)
         {
@@ -810,7 +809,7 @@ GmicStatus GSN_API RunGmic(GmicImageList* list, GmicOptions* options, GmicErrorI
 
         gmic gmicInstance;
 
-        AddCommandsFromResources(options->customResourcePath, options->customUserPath, gmicInstance);
+        AddCommandsFromResources(options->customResourcePath, gmicInstance);
 
         gmicInstance.set_variable("_host", options->hostName ? options->hostName : "gmic-sharp", 0);
 
