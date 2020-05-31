@@ -515,7 +515,7 @@ namespace
 
         cimg_snprintf(updateFilePath, sizeof(updateFilePath), "%supdate%u.gmic", gmic::path_rc(customResourcePath), gmic_version);
 
-        std::FILE* updateFile = std::fopen(updateFilePath, "rb");
+        std::FILE* updateFile = cimg::std_fopen(updateFilePath, "rb");
 
         if (updateFile)
         {
@@ -531,10 +531,10 @@ namespace
                 // Ignore any errors from add_commands
             }
 
-            std::fclose(updateFile);
+            cimg::fclose(updateFile);
         }
 
-        std::FILE* userFile = std::fopen(gmic::path_user(customResourcePath), "rb");
+        std::FILE* userFile = cimg::std_fopen(gmic::path_user(customResourcePath), "rb");
 
         if (userFile)
         {
@@ -547,7 +547,7 @@ namespace
                 // Ignore any errors from add_commands
             }
 
-            std::fclose(userFile);
+            cimg::fclose(userFile);
         }
     }
 }

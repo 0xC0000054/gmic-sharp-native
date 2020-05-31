@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * An `ImageListIndexOutOfRange` error code is now used to indicate when the image list index is not valid.
+* Support custom resource paths that use UTF-8.
 
 ### Fixed
 
