@@ -1,0 +1,1 @@
+This directory is where the 32-bit (x86) binaries will be placed when building the library.

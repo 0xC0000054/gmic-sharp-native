@@ -19,7 +19,7 @@ First compile the version resources:
 `windres ../msvc/version.rc version.o`
 
 Then compile the DLL:
-`g++ -shared -DGMICSHARPNATIVE_EXPORTS -I../gmic/src ./GmicSharpNative.cpp ./version.o -o GmicSharpNative_x64.dll -L../gmic/gcc64 -Wl,--stack,16777216 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -static -lgmic -lfftw3 -lcurl -ltiff -lz -lzstd -llzma -lgomp -ljpeg -lpng`
+`g++ -shared -DGMICSHARPNATIVE_EXPORTS -I../gmic/src ./GmicSharpNative.cpp ./version.o -o ../bin/x64/libGmicSharpNative.dll -L../gmic/gcc64 -Wl,--stack,16777216 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -static -lgmic -lfftw3 -lcurl -ltiff -lz -lzstd -llzma -lgomp -ljpeg -lpng`
 
 ### Using Visual Studio 2019:
 

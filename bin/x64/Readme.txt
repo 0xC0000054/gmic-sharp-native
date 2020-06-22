@@ -1,0 +1,1 @@
+This directory is where the 64-bit (x64) binaries will be placed when building the library.
