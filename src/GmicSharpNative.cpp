@@ -48,6 +48,7 @@
 */
 
 #include "GmicSharpNative.h"
+#include "version.h"
 #include "CImg.h"
 #include "gmic.h"
 #include <string>
@@ -549,6 +550,24 @@ namespace
 
             cimg::fclose(userFile);
         }
+    }
+}
+
+void GetLibraryVersion(int* major, int* minor, int* patch)
+{
+    if (major)
+    {
+        *major = VERSION_MAJOR;
+    }
+
+    if (minor)
+    {
+        *minor = VERSION_MINOR;
+    }
+
+    if (patch)
+    {
+        *patch = VERSION_PATCH;
     }
 }
 

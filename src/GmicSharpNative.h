@@ -131,6 +131,8 @@ struct GmicImageListItemInfo
     ImageFormat format;
 };
 
+extern "C" DLL_EXPORT void GSN_API GetLibraryVersion(int* major, int* minor, int* patch);
+
 extern "C" DLL_EXPORT GmicImageList* GSN_API GmicImageListCreate();
 
 extern "C" DLL_EXPORT void GSN_API GmicImageListDestroy(GmicImageList* list);

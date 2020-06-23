@@ -15,6 +15,8 @@
 #include <winres.h>
 #endif
 
+#include "../src/version.h"
+
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -57,8 +59,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,6,0,0
- PRODUCTVERSION 0,6,0,0
+ FILEVERSION WIN_RESOURCE_VERSION
+ PRODUCTVERSION WIN_RESOURCE_VERSION
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -75,12 +77,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "GmicSharp Team"
             VALUE "FileDescription", "Native support library for gmic-sharp"
-            VALUE "FileVersion", "0.6.0.0"
+            VALUE "FileVersion", WIN_RESOURCE_VERSION_STR
             VALUE "InternalName", "GmicSharpNative.dll"
             VALUE "LegalCopyright", "Copyright (C) 2020 Nicholas Hayes"
             VALUE "OriginalFilename", "GmicSharpNative.dll"
             VALUE "ProductName", "GmicSharp"
-            VALUE "ProductVersion", "0.6.0.0"
+            VALUE "ProductVersion", WIN_RESOURCE_VERSION_STR
         END
     END
     BLOCK "VarFileInfo"
