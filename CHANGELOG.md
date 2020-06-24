@@ -11,11 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Allow callers to set a host application name.
 * A `GetLibraryVersion` method.
+* A `GrayAlpha88` value to the `NativeImageFormat` enumeration.
 
 ### Changed
 
 * An `ImageListIndexOutOfRange` error code is now used to indicate when the image list index is not valid.
 * Support custom resource paths that use UTF-8.
+* Callers now have to perform their own conversion to/from the G'MIC image format.
 
 ### Fixed
 
@@ -24,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 * The `customUserPath` field in `GmicOptions`.
+* The `Bgr888`, `Bgr888x`, `Bgra8888` and `Rgb888x` values from the `NativeImageFormat` enumeration.
 
 ## v0.6.0
 

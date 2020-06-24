@@ -137,358 +137,6 @@ private:
 
 namespace
 {
-    unsigned int GetChannelCount(ImageFormat format)
-    {
-        switch (format)
-        {
-        case ImageFormat::Gray8:
-            return 1;
-        case ImageFormat::Bgr888:
-        case ImageFormat::Rgb888:
-        case ImageFormat::Bgr888x:
-        case ImageFormat::Rgb888x:
-            return 3;
-        case ImageFormat::Bgra8888:
-        case ImageFormat::Rgba8888:
-            return 4;
-        default:
-            return 0;
-        }
-    }
-
-    inline unsigned char ClampToUint8(float value)
-    {
-        return static_cast<uint8_t>(value > 255.0f ? 255.0f : value < 0.0f ? 0.0f : value);
-    }
-
-    void CopyFromGray(
-        gmic_image<float>* image,
-        unsigned int width,
-        unsigned int height,
-        unsigned int stride,
-        const void* data)
-    {
-        float* dst = image->data(0, 0, 0, 0);
-
-        for (unsigned int y = 0; y < height; y++)
-        {
-            const uint8_t* src = static_cast<const uint8_t*>(data) + (static_cast<size_t>(y) * stride);
-
-            for (unsigned int x = 0; x < width; x++)
-            {
-                *dst++ = static_cast<float>(*src++);
-            }
-        }
-    }
-
-    void CopyFromRgbOrBgr(
-        gmic_image<float>* image,
-        unsigned int width,
-        unsigned int height,
-        unsigned int stride,
-        const void* data,
-        ImageFormat format)
-    {
-        float* dstR = image->data(0, 0, 0, 0);
-        float* dstG = image->data(0, 0, 0, 1);
-        float* dstB = image->data(0, 0, 0, 2);
-
-        for (unsigned int y = 0; y < height; y++)
-        {
-            const uint8_t* src = static_cast<const uint8_t*>(data) + (static_cast<size_t>(y) * stride);
-
-            for (unsigned int x = 0; x < width; x++)
-            {
-                switch (format)
-                {
-                case ImageFormat::Bgr888:
-                    *dstB++ = static_cast<float>(src[0]);
-                    *dstG++ = static_cast<float>(src[1]);
-                    *dstR++ = static_cast<float>(src[2]);
-                    break;
-                case ImageFormat::Rgb888:
-                    *dstR++ = static_cast<float>(src[0]);
-                    *dstG++ = static_cast<float>(src[1]);
-                    *dstB++ = static_cast<float>(src[2]);
-                    break;
-                }
-
-                src += 3;
-            }
-        }
-    }
-
-    void CopyFromRgbaOrBgra(
-        gmic_image<float>* image,
-        unsigned int width,
-        unsigned int height,
-        unsigned int stride,
-        const void* data,
-        ImageFormat format)
-    {
-        float* dstR = image->data(0, 0, 0, 0);
-        float* dstG = image->data(0, 0, 0, 1);
-        float* dstB = image->data(0, 0, 0, 2);
-        float* dstA = image->data(0, 0, 0, 3);
-
-        for (unsigned int y = 0; y < height; y++)
-        {
-            const uint8_t* src = static_cast<const uint8_t*>(data) + (static_cast<size_t>(y) * stride);
-
-            for (unsigned int x = 0; x < width; x++)
-            {
-                switch (format)
-                {
-                case ImageFormat::Bgra8888:
-                    *dstB++ = static_cast<float>(src[0]);
-                    *dstG++ = static_cast<float>(src[1]);
-                    *dstR++ = static_cast<float>(src[2]);
-                    *dstA++ = static_cast<float>(src[3]);
-                    break;
-                case ImageFormat::Rgba8888:
-                    *dstR++ = static_cast<float>(src[0]);
-                    *dstG++ = static_cast<float>(src[1]);
-                    *dstB++ = static_cast<float>(src[2]);
-                    *dstA++ = static_cast<float>(src[3]);
-                    break;
-                }
-
-                src += 4;
-            }
-        }
-    }
-
-    void CopyFromRgbxOrBgrx(
-        gmic_image<float>* image,
-        unsigned int width,
-        unsigned int height,
-        unsigned int stride,
-        const void* data,
-        ImageFormat format)
-    {
-        float* dstR = image->data(0, 0, 0, 0);
-        float* dstG = image->data(0, 0, 0, 1);
-        float* dstB = image->data(0, 0, 0, 2);
-
-        for (unsigned int y = 0; y < height; y++)
-        {
-            const uint8_t* src = static_cast<const uint8_t*>(data) + (static_cast<size_t>(y) * stride);
-
-            for (unsigned int x = 0; x < width; x++)
-            {
-                switch (format)
-                {
-                case ImageFormat::Bgr888x:
-                    *dstB++ = static_cast<float>(src[0]);
-                    *dstG++ = static_cast<float>(src[1]);
-                    *dstR++ = static_cast<float>(src[2]);
-                    break;
-                case ImageFormat::Rgb888x:
-                    *dstR++ = static_cast<float>(src[0]);
-                    *dstG++ = static_cast<float>(src[1]);
-                    *dstB++ = static_cast<float>(src[2]);
-                    break;
-                }
-
-                src += 4;
-            }
-        }
-    }
-
-    void CopyToGray(
-        const gmic_image<float>* image,
-        unsigned int width,
-        unsigned int height,
-        unsigned int stride,
-        void* data,
-        ImageFormat format)
-    {
-        const float* src = image->data(0, 0, 0, 0);
-
-        for (unsigned int y = 0; y < height; y++)
-        {
-            uint8_t* dst = static_cast<uint8_t*>(data) + (static_cast<size_t>(y) * stride);
-
-            for (unsigned int x = 0; x < width; x++)
-            {
-                uint8_t gray = ClampToUint8(*src++);
-
-                switch (format)
-                {
-                case ImageFormat::Gray8:
-                    *dst++ = gray;
-                    break;
-                case ImageFormat::Bgr888:
-                case ImageFormat::Rgb888:
-                    dst[0] = dst[1] = dst[2] = gray;
-                    dst += 3;
-                    break;
-                case ImageFormat::Bgr888x:
-                case ImageFormat::Rgb888x:
-                    dst[0] = dst[1] = dst[2] = gray;
-                    dst += 4;
-                    break;
-                case ImageFormat::Bgra8888:
-                case ImageFormat::Rgba8888:
-                    dst[0] = dst[1] = dst[2] = gray;
-                    dst[3] = 255;
-                    dst += 4;
-                    break;
-                }
-            }
-        }
-    }
-
-    void CopyToGrayWithAlpha(
-        const gmic_image<float>* image,
-        unsigned int width,
-        unsigned int height,
-        unsigned int stride,
-        void* data)
-    {
-        const float* srcGray = image->data(0, 0, 0, 0);
-        const float* srcA = image->data(0, 0, 0, 1);
-
-        for (unsigned int y = 0; y < height; y++)
-        {
-            uint8_t* dst = static_cast<uint8_t*>(data) + (static_cast<size_t>(y) * stride);
-
-            for (unsigned int x = 0; x < width; x++)
-            {
-                dst[0] = dst[1] = dst[2] = ClampToUint8(*srcGray++);
-                dst[3] = ClampToUint8(*srcA++);
-
-                dst += 4;
-            }
-        }
-    }
-
-    void CopyToRgbOrBgr(
-        const gmic_image<float>* image,
-        unsigned int width,
-        unsigned int height,
-        unsigned int stride,
-        void* data,
-        ImageFormat format)
-    {
-        const float* srcR = image->data(0, 0, 0, 0);
-        const float* srcG = image->data(0, 0, 0, 1);
-        const float* srcB = image->data(0, 0, 0, 2);
-
-        for (unsigned int y = 0; y < height; y++)
-        {
-            uint8_t* dst = static_cast<uint8_t*>(data) + (static_cast<size_t>(y) * stride);
-
-            for (unsigned int x = 0; x < width; x++)
-            {
-                switch (format)
-                {
-                case ImageFormat::Bgr888:
-                    dst[0] = ClampToUint8(*srcB++);
-                    dst[1] = ClampToUint8(*srcG++);
-                    dst[2] = ClampToUint8(*srcR++);
-                    break;
-                case ImageFormat::Rgb888:
-                    dst[0] = ClampToUint8(*srcR++);
-                    dst[1] = ClampToUint8(*srcG++);
-                    dst[2] = ClampToUint8(*srcB++);
-                    break;
-                }
-
-                dst += 3;
-            }
-        }
-    }
-
-    void CopyToRgbaOrBgra(
-        const gmic_image<float>* image,
-        unsigned int width,
-        unsigned int height,
-        unsigned int stride,
-        void* data,
-        ImageFormat format)
-    {
-        const float* srcR = image->data(0, 0, 0, 0);
-        const float* srcG = image->data(0, 0, 0, 1);
-        const float* srcB = image->data(0, 0, 0, 2);
-        const float* srcA = image->data(0, 0, 0, 3);
-
-        for (unsigned int y = 0; y < height; y++)
-        {
-            uint8_t* dst = static_cast<uint8_t*>(data) + (static_cast<size_t>(y) * stride);
-
-            for (unsigned int x = 0; x < width; x++)
-            {
-                switch (format)
-                {
-                case ImageFormat::Bgra8888:
-                    dst[0] = ClampToUint8(*srcB++);
-                    dst[1] = ClampToUint8(*srcG++);
-                    dst[2] = ClampToUint8(*srcR++);
-                    dst[3] = ClampToUint8(*srcA++);
-                    break;
-                case ImageFormat::Rgba8888:
-                    dst[0] = ClampToUint8(*srcR++);
-                    dst[1] = ClampToUint8(*srcG++);
-                    dst[2] = ClampToUint8(*srcB++);
-                    dst[3] = ClampToUint8(*srcA++);
-                    break;
-                }
-
-                dst += 4;
-            }
-        }
-    }
-
-    void CopyToRgbxOrBgrx(
-        const gmic_image<float>* image,
-        unsigned int width,
-        unsigned int height,
-        unsigned int stride,
-        void* data,
-        ImageFormat format)
-    {
-        const float* srcR = image->data(0, 0, 0, 0);
-        const float* srcG = image->data(0, 0, 0, 1);
-        const float* srcB = image->data(0, 0, 0, 2);
-
-        for (unsigned int y = 0; y < height; y++)
-        {
-            uint8_t* dst = static_cast<uint8_t*>(data) + (static_cast<size_t>(y) * stride);
-
-            for (unsigned int x = 0; x < width; x++)
-            {
-                switch (format)
-                {
-                case ImageFormat::Bgra8888:
-                    dst[0] = ClampToUint8(*srcB++);
-                    dst[1] = ClampToUint8(*srcG++);
-                    dst[2] = ClampToUint8(*srcR++);
-                    dst[3] = 255;
-                    break;
-                case ImageFormat::Rgba8888:
-                    dst[0] = ClampToUint8(*srcR++);
-                    dst[1] = ClampToUint8(*srcG++);
-                    dst[2] = ClampToUint8(*srcB++);
-                    dst[3] = 255;
-                    break;
-                case ImageFormat::Bgr888x:
-                    dst[0] = ClampToUint8(*srcB++);
-                    dst[1] = ClampToUint8(*srcG++);
-                    dst[2] = ClampToUint8(*srcR++);
-                    break;
-                case ImageFormat::Rgb888x:
-                    dst[0] = ClampToUint8(*srcR++);
-                    dst[1] = ClampToUint8(*srcG++);
-                    dst[2] = ClampToUint8(*srcB++);
-                    break;
-                }
-
-                dst += 4;
-            }
-        }
-    }
-
     bool CheckGmicUpdateFileSignature(std::FILE* file)
     {
         bool result = false;
@@ -611,12 +259,12 @@ unsigned int GSN_API GmicImageListGetCount(GmicImageList* list)
     return count;
 }
 
-GmicStatus GSN_API GmicImageListGetImageInfo(
+GmicStatus GSN_API GmicImageListGetImageData(
     GmicImageList* list,
     unsigned int index,
-    GmicImageListItemInfo* info)
+    GmicImageListImageData* data)
 {
-    if (!list || !info)
+    if (!list || !data)
     {
         return GmicStatus::InvalidParameter;
     }
@@ -628,23 +276,40 @@ GmicStatus GSN_API GmicImageListGetImageInfo(
 
     gmic_image<float>* image = list->images.data(index);
 
-    info->width = static_cast<unsigned int>(image->width());
-    info->height = static_cast<unsigned int>(image->height());
+    data->width = static_cast<unsigned int>(image->width());
+    data->height = static_cast<unsigned int>(image->height());
 
     const int spectrum = image->spectrum();
 
-    switch (spectrum)
+    if (spectrum == 3) // RGB
     {
-    case 1: // Gray
-        info->format = ImageFormat::Gray8;
-        break;
-    case 3: // RGB
-        info->format = ImageFormat::Rgb888;
-        break;
-    case 2: // Gray + Alpha
-    case 4: // RGBA
-        info->format = ImageFormat::Rgba8888;
-        break;
+        data->pixels.red = image->data(0, 0, 0, 0);
+        data->pixels.green = image->data(0, 0, 0, 1);
+        data->pixels.blue = image->data(0, 0, 0, 2);
+        data->format = ImageFormat::Rgb888;
+    }
+    else if (spectrum == 4) // RGBA
+    {
+        data->pixels.red = image->data(0, 0, 0, 0);
+        data->pixels.green = image->data(0, 0, 0, 1);
+        data->pixels.blue = image->data(0, 0, 0, 2);
+        data->pixels.alpha = image->data(0, 0, 0, 3);
+        data->format = ImageFormat::Rgba8888;
+    }
+    else if (spectrum == 2) // Gray + Alpha
+    {
+        data->pixels.gray = image->data(0, 0, 0, 0);
+        data->pixels.alpha = image->data(0, 0, 0, 1);
+        data->format = ImageFormat::GrayAlpha88;
+    }
+    else if (spectrum == 1) // Gray
+    {
+        data->pixels.gray = image->data(0, 0, 0, 0);
+        data->format = ImageFormat::Gray8;
+    }
+    else
+    {
+        return GmicStatus::GmicUnsupportedChannelCount;
     }
 
     return GmicStatus::Ok;
@@ -654,12 +319,11 @@ GmicStatus GSN_API GmicImageListAdd(
     GmicImageList* list,
     unsigned int width,
     unsigned int height,
-    unsigned int stride,
-    const void* data,
     ImageFormat format,
-    const char* name)
+    const char* name,
+    GmicImageListPixelData* data)
 {
-    if (!list || !width || !height || !stride || !data)
+    if (!list || !width || !height || !data)
     {
         return GmicStatus::InvalidParameter;
     }
@@ -673,10 +337,23 @@ GmicStatus GSN_API GmicImageListAdd(
             list->ensure_capacity(index + 1);
         }
 
-        const unsigned int channelCount = GetChannelCount(format);
+        unsigned int channelCount;
 
-        if (!channelCount)
+        switch (format)
         {
+        case ImageFormat::Gray8:
+            channelCount = 1;
+            break;
+        case ImageFormat::GrayAlpha88:
+            channelCount = 2;
+            break;
+        case ImageFormat::Rgb888:
+            channelCount = 3;
+            break;
+        case ImageFormat::Rgba8888:
+            channelCount = 4;
+            break;
+        default:
             return GmicStatus::UnknownImageFormat;
         }
 
@@ -700,22 +377,23 @@ GmicStatus GSN_API GmicImageListAdd(
         switch (format)
         {
         case ImageFormat::Gray8:
-            CopyFromGray(image, width, height, stride, data);
+            data->gray = image->data(0, 0, 0, 0);
             break;
-        case ImageFormat::Bgr888:
+        case ImageFormat::GrayAlpha88:
+            data->gray = image->data(0, 0, 0, 0);
+            data->alpha = image->data(0, 0, 0, 1);
+            break;
         case ImageFormat::Rgb888:
-            CopyFromRgbOrBgr(image, width, height, stride, data, format);
+            data->red = image->data(0, 0, 0, 0);
+            data->green = image->data(0, 0, 0, 1);
+            data->blue = image->data(0, 0, 0, 2);
             break;
-        case ImageFormat::Bgr888x:
-        case ImageFormat::Rgb888x:
-            CopyFromRgbxOrBgrx(image, width, height, stride, data, format);
-            break;
-        case ImageFormat::Bgra8888:
         case ImageFormat::Rgba8888:
-            CopyFromRgbaOrBgra(image, width, height, stride, data, format);
+            data->red = image->data(0, 0, 0, 0);
+            data->green = image->data(0, 0, 0, 1);
+            data->blue = image->data(0, 0, 0, 2);
+            data->alpha = image->data(0, 0, 0, 3);
             break;
-        default:
-            return GmicStatus::UnknownImageFormat;
         }
     }
     catch (const std::bad_alloc&)
@@ -729,84 +407,6 @@ GmicStatus GSN_API GmicImageListAdd(
     catch (...)
     {
         return GmicStatus::UnknownError;
-    }
-
-    return GmicStatus::Ok;
-}
-
-GmicStatus GSN_API GmicImageListCopyToOutput(GmicImageList* list, unsigned int index, unsigned int width, unsigned int height, unsigned int stride, void* data, ImageFormat format)
-{
-    if (!list || !width || !height || !stride || !data)
-    {
-        return GmicStatus::InvalidParameter;
-    }
-
-    if (index >= list->size())
-    {
-        return GmicStatus::ImageListIndexOutOfRange;
-    }
-
-    const gmic_image<float>* image = list->images.data(index);
-
-    const int spectrum = image->spectrum();
-
-    if (spectrum == 3)
-    {
-        switch (format)
-        {
-        case ImageFormat::Bgr888:
-        case ImageFormat::Rgb888:
-            CopyToRgbOrBgr(image, width, height, stride, data, format);
-            break;
-        case ImageFormat::Bgr888x:
-        case ImageFormat::Rgb888x:
-        case ImageFormat::Bgra8888:
-        case ImageFormat::Rgba8888:
-            CopyToRgbxOrBgrx(image, width, height, stride, data, format);
-            break;
-        default:
-            return GmicStatus::InvalidParameter;
-        }
-    }
-    else if (spectrum == 4)
-    {
-        if (format != ImageFormat::Bgra8888 && format != ImageFormat::Rgba8888)
-        {
-            return GmicStatus::InvalidParameter;
-        }
-
-        CopyToRgbaOrBgra(image, width, height, stride, data, format);
-    }
-    else if (spectrum == 2)
-    {
-        if (format != ImageFormat::Bgra8888 && format != ImageFormat::Rgba8888)
-        {
-            return GmicStatus::InvalidParameter;
-        }
-
-        CopyToGrayWithAlpha(image, width, height, stride, data);
-    }
-    else if (spectrum == 1)
-    {
-        switch (format)
-        {
-        case ImageFormat::Gray8:
-        case ImageFormat::Bgr888:
-        case ImageFormat::Bgr888x:
-        case ImageFormat::Bgra8888:
-        case ImageFormat::Rgb888:
-        case ImageFormat::Rgb888x:
-        case ImageFormat::Rgba8888:
-            CopyToGray(image, width, height, stride, data, format);
-            break;
-        default:
-            return GmicStatus::InvalidParameter;
-        }
-
-    }
-    else
-    {
-        return GmicStatus::GmicUnsupportedChannelCount;
     }
 
     return GmicStatus::Ok;

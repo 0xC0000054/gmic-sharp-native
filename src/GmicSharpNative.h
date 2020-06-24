@@ -95,16 +95,10 @@ enum class ImageFormat
 {
     // 8-bit grayscale with no alpha channel
     Gray8 = 0,
-    // Opaque 24-bit color using the BGR format, 8 bits per component
-    Bgr888,
-    // Opaque 32-bit color using the BGR format, 8 bits per component
-    Bgr888x,
-    // 32-bit color using the BGRA format, 8 bits per component
-    Bgra8888,
+    // 8-bit grayscale with an 8-bit alpha channel
+    GrayAlpha88,
     // Opaque 24-bit color using the RGB format, 8 bits per component
     Rgb888,
-    // Opaque 32-bit color using the RGB format, 8 bits per component
-    Rgb888x,
     // 32-bit color using the RGBA format, 8 bits per component
     Rgba8888
 };
@@ -124,10 +118,23 @@ struct GmicOptions
     bool* abort;
 };
 
-struct GmicImageListItemInfo
+struct GmicImageListPixelData
+{
+    union
+    {
+        float* red;
+        float* gray;
+    };
+    float* green;
+    float* blue;
+    float* alpha;
+};
+
+struct GmicImageListImageData
 {
     unsigned int width;
     unsigned int height;
+    GmicImageListPixelData pixels;
     ImageFormat format;
 };
 
@@ -141,29 +148,19 @@ extern "C" DLL_EXPORT void GSN_API GmicImageListClear(GmicImageList * list);
 
 extern "C" DLL_EXPORT unsigned int GSN_API GmicImageListGetCount(GmicImageList* list);
 
-extern "C" DLL_EXPORT GmicStatus GSN_API GmicImageListGetImageInfo(
+extern "C" DLL_EXPORT GmicStatus GSN_API GmicImageListGetImageData(
     GmicImageList* list,
     unsigned int index,
-    GmicImageListItemInfo* info);
+    GmicImageListImageData* data);
 
 
 extern "C" DLL_EXPORT GmicStatus GSN_API GmicImageListAdd(
     GmicImageList* list,
     unsigned int width,
     unsigned int height,
-    unsigned int stride,
-    const void* data,
     ImageFormat format,
-    const char* name);
-
-extern "C" DLL_EXPORT GmicStatus GSN_API GmicImageListCopyToOutput(
-    GmicImageList* list,
-    unsigned int index,
-    unsigned int width,
-    unsigned int height,
-    unsigned int stride,
-    void* data,
-    ImageFormat format);
+    const char* name,
+    GmicImageListPixelData* data);
 
 extern "C" DLL_EXPORT GmicStatus GSN_API RunGmic(
     GmicImageList* images,
