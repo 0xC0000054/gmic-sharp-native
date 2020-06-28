@@ -367,7 +367,7 @@ GmicStatus GSN_API GmicImageListAdd(
         {
             char imageNameBuffer[32];
 
-            std::sprintf(imageNameBuffer, "image %llu", static_cast<uint64_t>(index) + 1);
+            std::sprintf(imageNameBuffer, "image " cimg_fuint64, static_cast<uint64_t>(index) + 1);
 
             list->names[index] = imageNameBuffer;
         }
