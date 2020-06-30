@@ -71,7 +71,7 @@
     #define GSN_API __cdecl
   #endif
 #else
-#define DLL_EXPORT
+#define DLL_EXPORT __attribute__ ((visibility ("default")))
 #define GSN_API __attribute__ ((cdecl))
 #endif // _WIN32
 
