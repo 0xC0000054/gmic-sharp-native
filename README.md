@@ -16,7 +16,7 @@ Once libgmic is built change the MSYS shell to the `src` folder in the project r
 Assuming that you are building a statically-linked version of the 64-bit DLL with libgmic.a located in `<root>gmic/gcc64`, you would run the following commands from the MSYS2 64 shell:   
 
 First compile the version resources:
-`windres ../msvc/version.rc version.o`
+`windres ./version.rc version.o`
 
 Then compile the DLL:
 `g++ -shared -DGMICSHARPNATIVE_EXPORTS -I../gmic/src ./GmicSharpNative.cpp ./version.o -o ../bin/x64/libGmicSharpNative.dll -L../gmic/gcc64 -Wl,--stack,16777216 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -static -lgmic -lfftw3 -lcurl -ltiff -lz -lzstd -llzma -lgomp -ljpeg -lpng`
