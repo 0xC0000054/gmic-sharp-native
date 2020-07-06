@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * An `ImageListIndexOutOfRange` error code is now used to indicate when the image list index is not valid.
 * Support custom resource paths that use UTF-8.
 * Callers now have to perform their own conversion to/from the G'MIC image format.
+* Allow builds to include gmic.cpp
 
 ### Fixed
 

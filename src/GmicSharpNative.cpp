@@ -50,6 +50,13 @@
 #include "GmicSharpNative.h"
 #include "version.h"
 #include "CImg.h"
+
+// Remove the gmic_build define before including gmic.h
+// it causes linker errors when used outside of gmic.cpp
+#ifdef gmic_build
+#undef gmic_build
+#endif // gmic_build
+
 #include "gmic.h"
 #include <string>
 #include <stdexcept>
