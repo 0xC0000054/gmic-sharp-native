@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Allow callers to set a host application name.
 * A `GetLibraryVersion` method.
 * A `GrayAlpha88` value to the `NativeImageFormat` enumeration.
+* A CMake configuration file.
 
 ### Changed
 
