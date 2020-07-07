@@ -5,7 +5,32 @@ This provides the native interface between gmic-sharp and [libgmic](https://gith
 
 ## Building the library
 
-### Using MSYS2:
+### Linux
+
+#### Building with the installed version of G'MIC
+
+This version dynamically links to the installed version of the G'MIC library.
+
+Assuming that you are building a 64-bit library with libgmic located in the system search path, you would run the following commands from the shell:  
+
+`gcc -shared -fPIC src/GmicSharpNative.cpp -o bin/x64/libGmicSharpNative.so -lgmic -lpthread -lX11 -lstdc++ -lm`
+
+#### Building with a local copy of G'MIC
+
+This version uses the G'MIC source code when building the library.
+
+First clone the G'MIC repository into `<root>/gmic`.
+
+Next create a build directory and run CMake to setup the build environment.
+
+`mkdir build && cd build`   
+`cmake ..`
+
+Once CMake has finished configuring  the library can be built by running `make`.
+
+### Windows
+
+#### Using MSYS2:
 
 This is the preferred method as it allows all G'MIC features to be used.
 I build libgmic as static library with CURL, FFTW, JPEG, OpenMP, PNG and TIFF enabled.
@@ -21,7 +46,7 @@ First compile the version resources:
 Then compile the DLL:
 `g++ -shared -DGMICSHARPNATIVE_EXPORTS -I../gmic/src ./GmicSharpNative.cpp ./version.o -o ../bin/x64/libGmicSharpNative.dll -L../gmic/gcc64 -Wl,--stack,16777216 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -static -lgmic -lfftw3 -lcurl -ltiff -lz -lzstd -llzma -lgomp -ljpeg -lpng`
 
-### Using Visual Studio 2019:
+#### Using Visual Studio 2019:
 
 This should only be used for debugging the `gmic-sharp` Managed <--> Native transitions.
 The Visual C++ 2019 compiler does not currently support all of the features of the GCC build.
