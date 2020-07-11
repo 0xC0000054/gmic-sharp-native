@@ -99,7 +99,7 @@ if (USE_STATIC_LINKING)
 endif()
 
 # compile flags
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/modules)
+set(CMAKE_POSITION_INDEPENDENT_CODE True)
 
 add_definitions(-Dgmic_build -Dcimg_use_vt100 -Dgmic_is_parallel -Dcimg_use_abort -Dcimg_appname=\"gmic\")
 if(APPLE)
