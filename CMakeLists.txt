@@ -138,12 +138,24 @@ if(NOT EXISTS ${GMIC_PATH}/src/gmic_stdlib.h)
 endif()
 
 include_directories(${GMIC_PATH}/src)
+set(libGmicSharpNative_SRCS
+
+${GMIC_PATH}/src/gmic.h
+${GMIC_PATH}/src/gmic.cpp
+src/GmicSharpNative.cpp
+)
 
 if(WIN32)
   ENABLE_LANGUAGE(RC)
-  add_library(GmicSharpNative SHARED ${GMIC_PATH}/src/gmic.h ${GMIC_PATH}/src/gmic.cpp src/GmicSharpNative.cpp src/version.rc)
+  # When building with MinGW CMake inserts flags that cause windres to fail
+  # So we force the resource compiler to ignore all flags
+  if (MINGW)
+    set(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> -O coff <DEFINES> <INCLUDES> <SOURCE> <OBJECT>")
+  endif()
+ 
+  add_library(GmicSharpNative SHARED ${libGmicSharpNative_SRCS} src/version.rc)
 else()
-  add_library(GmicSharpNative SHARED ${GMIC_PATH}/src/gmic.h ${GMIC_PATH}/src/gmic.cpp src/GmicSharpNative.cpp)
+  add_library(GmicSharpNative SHARED ${libGmicSharpNative_SRCS})
 endif()
 
 set(EXTRA_LIBRARIES)
