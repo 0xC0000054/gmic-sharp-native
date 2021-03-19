@@ -35,9 +35,9 @@ Once CMake has finished configuring  the library can be built by running `make`.
 This is the preferred method as it allows all G'MIC features to be used.
 Assuming that you are building the 64-bit DLL you would run the following commands from the MSYS2 64 shell:   
 
-First create the build folder: `mkdir build64 && cd build64`
-Second generate the MingGW makefiles: `cmake -G "MinGW Makefiles" ..`
-Third build the library: `mingw32-make`
+First create the build folder: `mkdir build64 && cd build64`   
+Second generate the MingGW makefiles: `cmake -G "MinGW Makefiles" ..`   
+Third build the library: `mingw32-make`   
 
 This should result in `libGmicSharpNative.dll` being generated in the `buil64` folder.
 
