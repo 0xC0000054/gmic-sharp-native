@@ -33,18 +33,27 @@ Once CMake has finished configuring  the library can be built by running `make`.
 #### Using MSYS2:
 
 This is the preferred method as it allows all G'MIC features to be used.
-I build libgmic as static library with CURL, FFTW, JPEG, OpenMP, PNG and TIFF enabled.
-The final DLL is statically linked to all of its non-OS dependencies.
+Assuming that you are building the 64-bit DLL you would run the following commands from the MSYS2 64 shell:   
 
-Once libgmic is built change the MSYS shell to the `src` folder in the project root.
+First create the build folder: `mkdir build64 && cd build64`
+Second generate the MingGW makefiles: `cmake -G "MinGW Makefiles" ..`
+Third build the library: `mingw32-make`
 
-Assuming that you are building a statically-linked version of the 64-bit DLL with libgmic.a located in `<root>gmic/gcc64`, you would run the following commands from the MSYS2 64 shell:   
+This should result in `libGmicSharpNative.dll` being generated in the `buil64` folder.
 
-First compile the version resources:
-`windres ./version.rc version.o`
+You will need to copy it and the native dependencies to the folder of your choice.
+Assuming your target folder is the `bin/x64` folder in the GmicSharpNative root, you can use the following commands:
 
-Then compile the DLL:
-`g++ -shared -DGMICSHARPNATIVE_EXPORTS -I../gmic/src ./GmicSharpNative.cpp ./version.o -o ../bin/x64/libGmicSharpNative.dll -L../gmic/gcc64 -Wl,--stack,16777216 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -static -lgmic -lfftw3 -lcurl -ltiff -lz -lzstd -llzma -lgomp -ljpeg -lpng`
+Copy `libGmicSharpNative.dll` to the `bin/x64` folder:
+
+`cp ./libGmicSharpNative.dll ../bin/x64/libGmicSharpNative.dll`
+
+Copy the required dependences from the `/mingw64/bin` folder:
+
+`cd /mingw64/bin/ && cp libgcc_s_seh-1.dll libwinpthread-1.dll libgomp-1.dll libstdc++-6.dll libcurl-4.dll libbrotlidec.dll libbrotlicommon.dll libcrypto-1_1-x64.dll libidn2-0.dll libiconv-2.dll libintl-8.dll libunistring-2.dll libnghttp2-14.dll libpsl-5.dll libssh2-1.dll zlib1.dll libssl-1_1-x64.dll libzstd.dll libfftw3-3.dll libjpeg-8.dll libpng16-16.dll libtiff-5.dll liblzma-5.dll <GmicSharpNative_ROOT>/bin/x64`
+
+The above list was taken from the Windows build instructions for the G'MIC CLI on the [G'MIC download page](https://gmic.eu/download.html#windows).
+Depending on the library versions that you have installed there may be additional dependencies that are not listed above.
 
 #### Using Visual Studio 2019:
 
