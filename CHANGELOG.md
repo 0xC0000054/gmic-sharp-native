@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* `name` and `nameLength` fields to the `GmicImageListImageData` structure.
+  * This allows G'MIC to set the name of the output image.
+
 ## [v0.7.0](https://github.com/0xC0000054/gmic-sharp-native/compare/v0.6.0...v0.7.0) - 2020-07-10
 
 ### Added

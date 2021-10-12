@@ -319,6 +319,35 @@ GmicStatus GSN_API GmicImageListGetImageData(
         return GmicStatus::GmicUnsupportedChannelCount;
     }
 
+    if (index < list->names.size())
+    {
+        const cimg_library::CImg<char>* name = list->names.data(index);
+
+        if (name->width() > 0)
+        {
+            data->name = name->data();
+            int nameLength = name->width();
+
+            // Subtract the terminator from the name length.
+            if (data->name[nameLength - 1] == '\0')
+            {
+                nameLength -= 1;
+            }
+
+            data->nameLength = nameLength;
+        }
+        else
+        {
+            data->name = nullptr;
+            data->nameLength = 0;
+        }
+    }
+    else
+    {
+        data->name = nullptr;
+        data->nameLength = 0;
+    }
+
     return GmicStatus::Ok;
 }
 

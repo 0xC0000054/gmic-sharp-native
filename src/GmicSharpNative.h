@@ -136,6 +136,8 @@ struct GmicImageListImageData
     unsigned int height;
     GmicImageListPixelData pixels;
     ImageFormat format;
+    const char* name;
+    int nameLength;
 };
 
 extern "C" DLL_EXPORT void GSN_API GetLibraryVersion(int* major, int* minor, int* patch);
