@@ -122,7 +122,7 @@ public:
             }
         }
 
-        uint32_t nextIndex = images.size();
+        unsigned int nextIndex = images.size();
 
         if (nextIndex < std::numeric_limits<unsigned int>::max())
         {
