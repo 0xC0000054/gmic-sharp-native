@@ -146,8 +146,6 @@ extern "C" DLL_EXPORT GmicImageList* GSN_API GmicImageListCreate();
 
 extern "C" DLL_EXPORT void GSN_API GmicImageListDestroy(GmicImageList* list);
 
-extern "C" DLL_EXPORT void GSN_API GmicImageListClear(GmicImageList * list);
-
 extern "C" DLL_EXPORT unsigned int GSN_API GmicImageListGetCount(GmicImageList* list);
 
 extern "C" DLL_EXPORT GmicStatus GSN_API GmicImageListGetImageData(

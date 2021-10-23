@@ -246,14 +246,6 @@ void GSN_API GmicImageListDestroy(GmicImageList* imageList)
     }
 }
 
-void GSN_API GmicImageListClear(GmicImageList* list)
-{
-    if (list)
-    {
-        list->clear();
-    }
-}
-
 unsigned int GSN_API GmicImageListGetCount(GmicImageList* list)
 {
     unsigned int count = 0;
