@@ -93,14 +93,14 @@ enum class GmicStatus
 // G'MIC assumes the image data uses the range of [0, 255]
 enum class ImageFormat
 {
-    // 8-bit grayscale with no alpha channel
-    Gray8 = 0,
-    // 8-bit grayscale with an 8-bit alpha channel
-    GrayAlpha88,
-    // Opaque 24-bit color using the RGB format, 8 bits per component
-    Rgb888,
-    // 32-bit color using the RGBA format, 8 bits per component
-    Rgba8888
+    // Gray scale without an alpha channel
+    Gray = 0,
+    // Gray scale with an alpha channel
+    GrayAlpha,
+    // Red, green and blue color channels without an alpha channel
+    Rgb,
+    // Red, green and blue color channels with an alpha channel
+    RgbAlpha
 };
 
 struct GmicErrorInfo

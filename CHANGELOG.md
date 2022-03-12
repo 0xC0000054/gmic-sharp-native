@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * `name` and `nameLength` fields to the `GmicImageListImageData` structure.
   * This allows G'MIC to set the name of the output image.
+  
+### Changed
+
+* Removed the bit-depth from the `ImageFormat` value names.  
+* Renamed the `ImageFormat` `Rgba` value to `RgbAlpha`.  
 
 ### Removed
 

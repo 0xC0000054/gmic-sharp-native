@@ -285,26 +285,26 @@ GmicStatus GSN_API GmicImageListGetImageData(
         data->pixels.red = image->data(0, 0, 0, 0);
         data->pixels.green = image->data(0, 0, 0, 1);
         data->pixels.blue = image->data(0, 0, 0, 2);
-        data->format = ImageFormat::Rgb888;
+        data->format = ImageFormat::Rgb;
     }
-    else if (spectrum == 4) // RGBA
+    else if (spectrum == 4) // RGB + Alpha
     {
         data->pixels.red = image->data(0, 0, 0, 0);
         data->pixels.green = image->data(0, 0, 0, 1);
         data->pixels.blue = image->data(0, 0, 0, 2);
         data->pixels.alpha = image->data(0, 0, 0, 3);
-        data->format = ImageFormat::Rgba8888;
+        data->format = ImageFormat::RgbAlpha;
     }
     else if (spectrum == 2) // Gray + Alpha
     {
         data->pixels.gray = image->data(0, 0, 0, 0);
         data->pixels.alpha = image->data(0, 0, 0, 1);
-        data->format = ImageFormat::GrayAlpha88;
+        data->format = ImageFormat::GrayAlpha;
     }
     else if (spectrum == 1) // Gray
     {
         data->pixels.gray = image->data(0, 0, 0, 0);
-        data->format = ImageFormat::Gray8;
+        data->format = ImageFormat::Gray;
     }
     else
     {
@@ -369,16 +369,16 @@ GmicStatus GSN_API GmicImageListAdd(
 
         switch (format)
         {
-        case ImageFormat::Gray8:
+        case ImageFormat::Gray:
             channelCount = 1;
             break;
-        case ImageFormat::GrayAlpha88:
+        case ImageFormat::GrayAlpha:
             channelCount = 2;
             break;
-        case ImageFormat::Rgb888:
+        case ImageFormat::Rgb:
             channelCount = 3;
             break;
-        case ImageFormat::Rgba8888:
+        case ImageFormat::RgbAlpha:
             channelCount = 4;
             break;
         default:
@@ -404,19 +404,19 @@ GmicStatus GSN_API GmicImageListAdd(
 
         switch (format)
         {
-        case ImageFormat::Gray8:
+        case ImageFormat::Gray:
             data->gray = image->data(0, 0, 0, 0);
             break;
-        case ImageFormat::GrayAlpha88:
+        case ImageFormat::GrayAlpha:
             data->gray = image->data(0, 0, 0, 0);
             data->alpha = image->data(0, 0, 0, 1);
             break;
-        case ImageFormat::Rgb888:
+        case ImageFormat::Rgb:
             data->red = image->data(0, 0, 0, 0);
             data->green = image->data(0, 0, 0, 1);
             data->blue = image->data(0, 0, 0, 2);
             break;
-        case ImageFormat::Rgba8888:
+        case ImageFormat::RgbAlpha:
             data->red = image->data(0, 0, 0, 0);
             data->green = image->data(0, 0, 0, 1);
             data->blue = image->data(0, 0, 0, 2);
