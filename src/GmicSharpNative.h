@@ -87,7 +87,8 @@ enum class GmicStatus
     GmicResourcePathInitFailed,
     GmicUnsupportedChannelCount,
     ImageListIndexOutOfRange,
-    UnknownError
+    UnknownError,
+    UnsupportedStructureVersion
 };
 
 // G'MIC assumes the image data uses the range of [0, 255]
@@ -132,15 +133,14 @@ struct GmicImageListPixelData
 
 struct GmicImageListImageData
 {
+    int version;
     unsigned int width;
     unsigned int height;
-    GmicImageListPixelData pixels;
     ImageFormat format;
+    GmicImageListPixelData pixels;
     const char* name;
     int nameLength;
 };
-
-extern "C" DLL_EXPORT void GSN_API GetLibraryVersion(int* major, int* minor, int* patch);
 
 extern "C" DLL_EXPORT GmicImageList* GSN_API GmicImageListCreate();
 

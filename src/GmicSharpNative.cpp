@@ -208,24 +208,6 @@ namespace
     }
 }
 
-void GetLibraryVersion(int* major, int* minor, int* patch)
-{
-    if (major)
-    {
-        *major = VERSION_MAJOR;
-    }
-
-    if (minor)
-    {
-        *minor = VERSION_MINOR;
-    }
-
-    if (patch)
-    {
-        *patch = VERSION_PATCH;
-    }
-}
-
 GmicImageList* GSN_API GmicImageListCreate()
 {
     try
@@ -271,6 +253,11 @@ GmicStatus GSN_API GmicImageListGetImageData(
     if (index >= list->size())
     {
         return GmicStatus::ImageListIndexOutOfRange;
+    }
+
+    if (data->version != 1)
+    {
+        return GmicStatus::UnsupportedStructureVersion;
     }
 
     gmic_image<float>* image = list->images.data(index);
